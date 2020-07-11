@@ -38,3 +38,26 @@ out
 test-output
 atlassian-ide-plugin.xml
 .gradletasknamecache
+
+
+#java
+*.class
+
+#package file
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+#maven ignore
+target/
+build/
+
+#eclipse ignore
+.settings/
+.project
+.classpatch
+
+# system ignore
+.DS_Store
+Thumbs.db
