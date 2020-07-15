@@ -1362,17 +1362,21 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	 * @return the name of the autowire candidate, or {@code null} if none found
 	 */
 	@Nullable
+	// candidateBeans 为上一步通过类型匹配到的多个bean，该 Map 中至少有两个元素。
 	protected String determineAutowireCandidate(Map<String, Object> candidates, DependencyDescriptor descriptor) {
+		//  requiredType 为匹配到的接口的类型
 		Class<?> requiredType = descriptor.getDependencyType();
+		// 1. 先找 Bean 上有@Primary 注解的，有则直接返回
 		String primaryCandidate = determinePrimaryCandidate(candidates, requiredType);
 		if (primaryCandidate != null) {
 			return primaryCandidate;
 		}
+		// 2.再找 Bean 上有 @Order，@PriorityOrder 注解的，有则返回
 		String priorityCandidate = determineHighestPriorityCandidate(candidates, requiredType);
 		if (priorityCandidate != null) {
 			return priorityCandidate;
 		}
-		// Fallback
+		// Fallback    3. 再找 bean 的名称匹配的
 		for (Map.Entry<String, Object> entry : candidates.entrySet()) {
 			String candidateName = entry.getKey();
 			Object beanInstance = entry.getValue();
